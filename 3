@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ನಿಮ್ಮ ಮನೆವರೆಗೆ | Namma Kollegala</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0f172a;
+            color: white;
+            background-image: radial-gradient(circle at top right, rgba(245, 158, 11, 0.1), transparent),
+                              radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.1), transparent);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient:hover {
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .active-tab {
+            background: #f59e0b;
+            color: #000;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .logo-ring {
+            border: 2px solid #f59e0b;
+            padding: 4px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body class="pb-20">
+
+    <header class="text-center pt-12 pb-8 px-4">
+        <div class="mb-4">
+            <div class="logo-ring">
+                <img src="https://via.placeholder.com/80/f59e0b/000000?text=NM" alt="Logo" class="w-20 h-20 rounded-full object-cover shadow-2xl">
+            </div>
+        </div>
+        <h1 class="text-5xl font-extrabold text-amber-500 mb-2 tracking-tight">ನಿಮ್ಮ ಮನೆವರೆಗೆ</h1>
+        <p class="text-gray-400 italic font-light">"Tasty Food, Quick Service - At Your Doorstep"</p>
+    </header>
+
+    <nav class="flex justify-center gap-3 mb-10 px-4">
+        <button id="tab-pick" onclick="switchSection('pick')" class="active-tab flex items-center gap-2 px-6 py-4 rounded-2xl font-bold transition-all duration-300">
+            <i data-lucide="bike" class="w-5 h-5"></i> Pick & Drop
+        </button>
+        <button id="tab-food" onclick="switchSection('food')" class="glass-card flex items-center gap-2 px-6 py-4 rounded-2xl font-bold text-gray-300 transition-all duration-300">
+            <i data-lucide="utensils" class="w-5 h-5"></i> Home Food
+        </button>
+    </nav>
+
+    <main class="max-w-md mx-auto px-5">
+        
+        <section id="section-pick" class="glass-card p-8">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="bg-amber-500/20 p-3 rounded-2xl text-amber-500">
+                    <i data-lucide="map-pinned" class="w-8 h-8"></i>
+                </div>
+                <h2 class="text-2xl font-bold">Pick & Drop</h2>
+            </div>
+
+            <div class="space-y-5">
+                <div class="relative">
+                    <label class="text-xs font-bold text-amber-500 uppercase ml-1">Current Location</label>
+                    <input type="text" id="pick-origin" placeholder="Fetching..." class="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-4 mt-1 outline-none focus:border-amber-500 transition-all">
+                    <button onclick="getLocation('pick-origin')" class="absolute right-4 top-10 text-amber-500 hover:scale-110 transition-transform">
+                        <i data-lucide="locate-fixed" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <div class="relative">
+                    <label class="text-xs font-bold text-gray-400 uppercase ml-1">Drop Destination</label>
+                    <input type="text" id="pick-dest" placeholder="Enter drop point" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-4 mt-1 outline-none focus:border-amber-500 transition-all">
+                </div>
+
+                <div class="bg-slate-900 border border-amber-500/30 rounded-2xl p-5 text-center">
+                    <span class="text-sm text-gray-400">Estimated Delivery Price</span>
+                    <div id="pick-price" class="text-3xl font-black text-amber-500 mt-1">₹ --</div>
+                </div>
+
+                <div class="space-y-4 pt-4 border-t border-slate-800">
+                    <input type="text" id="pick-name" placeholder="Full Name" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-4 outline-none">
+                    <input type="tel" id="pick-phone" placeholder="WhatsApp Mobile Number" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-4 outline-none">
+                    <textarea id="pick-instr" placeholder="Special Instructions (Item name, weight, etc.)" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-4 outline-none h-24 resize-none"></textarea>
+                </div>
+
+                <button onclick="sendWhatsApp('pick')" class="btn-gradient w-full py-5 rounded-2xl font-black text-black text-lg flex items-center justify-center gap-3">
+                    <i data-lucide="message-square"></i> Send to WhatsApp
+                </button>
+            </div>
+        </section>
+
+        <section id="section-food" class="hidden glass-card p-8">
+            <div class="text-center mb-10">
+                <p class="text-amber-500 text-sm font-semibold tracking-widest uppercase mb-2">Taste of Home</p>
+                <h2 class="text-4xl font-black tracking-tighter text-white">NAMMA KOLLEGALA</h2>
+            </div>
+
+            <div class="space-y-5">
+                <input type="text" id="food-name" placeholder="Customer Name" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-4 outline-none">
+                <input type="tel" id="food-phone" placeholder="Mobile Number" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-4 outline-none">
+                <textarea id="food-items" placeholder="List the items you want to order..." class="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-4 outline-none h-28 resize-none"></textarea>
+                
+                <div class="relative">
+                    <label class="text-xs font-bold text-green-500 uppercase ml-1">Delivery Address</label>
+                    <input type="text" id="food-loc" placeholder="Auto-detecting location..." class="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-4 mt-1 outline-none">
+                    <button onclick="getLocation('food-loc')" class="absolute right-4 top-10 text-green-500">
+                        <i data-lucide="navigation" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <div class="bg-slate-900 border border-green-500/30 rounded-2xl p-5 text-center">
+                    <span class="text-xs text-gray-400 italic">Delivery Charge from Choudeshwari Road</span>
+                    <div id="food-price" class="text-3xl font-black text-green-500 mt-1">₹ --</div>
+                </div>
+
+                <div class="bg-indigo-900/20 border border-indigo-500/20 rounded-2xl p-5">
+                    <p class="text-[10px] text-indigo-400 font-bold mb-3 uppercase tracking-widest">Pay Securely via UPI</p>
+                    <a href="upi://pay?pa=9448167849@ptyes&pn=NammaKollegala&cu=INR" class="flex items-center justify-center gap-3 bg-white text-black py-3 rounded-xl font-bold text-sm hover:bg-gray-200 transition-colors">
+                        <i data-lucide="credit-card" class="w-4 h-4"></i> Pay Amount: 9448167849@ptyes
+                    </a>
+                </div>
+
+                <button onclick="sendWhatsApp('food')" class="btn-gradient w-full py-5 rounded-2xl font-black text-black text-lg flex items-center justify-center gap-3">
+                    <i data-lucide="shopping-cart"></i> Place Order via WhatsApp
+                </button>
+            </div>
+        </section>
+
+        <footer class="text-center text-[10px] text-gray-600 mt-16 pb-10 uppercase tracking-widest">
+            <p class="mb-2">© 2026 ನಿಮ್ಮ ಮನೆವರೆಗೆ | 9448167849</p>
+            <p>Delivery Coverage: 5KM Radius from Kollegala Center</p>
+        </footer>
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        function switchSection(type) {
+            const pickS = document.getElementById('section-pick');
+            const foodS = document.getElementById('section-food');
+            const pickT = document.getElementById('tab-pick');
+            const foodT = document.getElementById('tab-food');
+
+            if (type === 'pick') {
+                pickS.classList.remove('hidden');
+                foodS.classList.add('hidden');
+                pickT.className = 'active-tab flex items-center gap-2 px-6 py-4 rounded-2xl font-bold transition-all';
+                foodT.className = 'glass-card flex items-center gap-2 px-6 py-4 rounded-2xl font-bold text-gray-300 transition-all';
+            } else {
+                foodS.classList.remove('hidden');
+                pickS.classList.add('hidden');
+                foodT.className = 'active-tab flex items-center gap-2 px-6 py-4 rounded-2xl font-bold transition-all';
+                pickT.className = 'glass-card flex items-center gap-2 px-6 py-4 rounded-2xl font-bold text-gray-300 transition-all';
+            }
+        }
+
+        function getLocation(inputId) {
+            const input = document.getElementById(inputId);
+            input.value = "📍 Locating you...";
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    input.value = `📍 GPS: ${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`;
+                    // Mock distance pricing (Real world would use Google API)
+                    const km = Math.floor(Math.random() * 5) + 1;
+                    calculatePrice(km, inputId.includes('pick') ? 'pick-price' : 'food-price');
+                }, () => {
+                    input.value = "Kollegala Town";
+                    calculatePrice(2, inputId.includes('pick') ? 'pick-price' : 'food-price');
+                });
+            }
+        }
+
+        function calculatePrice(km, displayId) {
+            let price = 30;
+            if (km > 1) price = 30;
+            if (km > 2) price = 40;
+            if (km > 3) price = 50;
+            if (km > 4) price = 60;
+            document.getElementById(displayId).innerText = `₹ ${price}`;
+        }
+
+        function sendWhatsApp(type) {
+            const adminPhone = "9448167849";
+            let msg = "";
+
+            if (type === 'pick') {
+                const name = document.getElementById('pick-name').value;
+                const phone = document.getElementById('pick-phone').value;
+                const origin = document.getElementById('pick-origin').value;
+                const dest = document.getElementById('pick-dest').value;
+                const price = document.getElementById('pick-price').innerText;
+                const notes = document.getElementById('pick-instr').value;
+
+                if(!name || !phone) { alert("Please enter Name and Phone"); return; }
+
+                msg = `*NEW PICK & DROP REQUEST*%0A%0A` +
+                      `👤 *Name:* ${name}%0A` +
+                      `📞 *Phone:* ${phone}%0A` +
+                      `📍 *From:* ${origin}%0A` +
+                      `🏁 *To:* ${dest}%0A` +
+                      `💰 *Estimated Price:* ${price}%0A` +
+                      `📝 *Instructions:* ${notes}`;
+            } else {
+                const name = document.getElementById('food-name').value;
+                const phone = document.getElementById('food-phone').value;
+                const items = document.getElementById('food-items').value;
+                const loc = document.getElementById('food-loc').value;
+                const price = document.getElementById('food-price').innerText;
+
+                if(!name || !items) { alert("Please enter Name and Items"); return; }
+
+                msg = `*NEW HOME FOOD ORDER*%0A%0A` +
+                      `👤 *Customer:* ${name}%0A` +
+                      `📞 *Phone:* ${phone}%0A` +
+                      `🍱 *Items:* ${items}%0A` +
+                      `📍 *Location:* ${loc}%0A` +
+                      `🚚 *Delivery Charge:* ${price}%0A%0A` +
+                      `_Price calculated from Choudeshwari Road_`;
+            }
+
+            window.open(`https://wa.me/${adminPhone}?text=${msg}`, '_blank');
+        }
+    </script>
+</body>
+</html>
